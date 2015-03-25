@@ -1,0 +1,2 @@
+# GeoFriend
+Prototype for game
