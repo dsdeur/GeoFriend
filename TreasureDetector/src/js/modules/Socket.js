@@ -44,12 +44,14 @@ module.exports = function(url, messageHandlers) {
             return;
         }
 
+        console.log(message, data);
         // Call the message handler and pass the data
         self.messageHandlers[message](data);
     }
 
     // Sends messages to server
     this.sendMessage = function(message, data) {
+        console.log(message, data);
         // Create JSON string from message and data
         this.socket.send(JSON.stringify({
             'message': message,

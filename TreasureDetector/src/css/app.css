@@ -148,6 +148,17 @@ canvas{
 	z-index:99;
 }
 
+iframe {
+	width: 100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	right:0;
+	left:0;
+	bottom:0;
+	z-index:99999999;
+}
+
 #compass {
 	height: 200px;
 	width: 200px;

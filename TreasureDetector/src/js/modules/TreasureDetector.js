@@ -25,7 +25,8 @@ var TreasureDetector = function() {
         this.socket = new Socket(config.socketUrl, {
             'new_distance': self.handleUpdateDistance,
             'new_orientation': self.handleUpdateOrientationOffset,
-            'connect': self.handleConnect
+            'connect': self.handleConnect,
+            'reset': self.handleReset
         });
 
         // Register orientation detection
@@ -41,7 +42,31 @@ var TreasureDetector = function() {
         self.rotate();
     };
 
+    this.handleReset = function() {
+        self.reset();
+    };
+
+    this.reset = function() {
+        self.makeArrow();
+        $(self.compass).css({
+            background:"url('../img/arrow.svg') no-repeat center center",
+            backgroundPosition: "70%"
+        });
+
+        self.orientation = 0;
+        self.orientationOffset = 0;
+        self.distance = 100;
+        self.scale = 1;
+        self.toScale = .2;
+        self.duration = 0.3;
+        self.vibrationDuration = 20;
+        self.connectIndex = 0;
+        self.foundTreasure = false;
+        document.getElementById("iframe").src = '';
+    };
+
     this.handleConnect = function() {
+        console.log("CONNECT");
         var person = $("#peoples .person").eq(self.connectIndex);
         person.addClass('checked');
 
@@ -54,6 +79,9 @@ var TreasureDetector = function() {
         self.connectIndex++;
 
         if(self.connectIndex > 4) {
+            var iframe = document.getElementById("iframe");
+            iframe.src = "winAnimation/index.html";
+
             var audio = document.getElementById("win");
             audio.play();
             self.scale = 7;
@@ -61,9 +89,8 @@ var TreasureDetector = function() {
 
             navigator.vibrate([800, 100, 800]);
 
-
-            TweenMax.to("#gem", 1.0, {scale: 15, ease:Linear.easeNone});
-            TweenMax.to("#gem", 1.0, {scale: 1, delay: 0.5, ease:Back.easeOut});
+            $("#peoples").css({opacity:0});
+            $("#gem").css({opacity:0});
         }
     };
 

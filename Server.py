@@ -109,6 +109,9 @@ class STRPServerProtocol(WebSocketServerProtocol):
         self.broadcast('connect', data);
 
 
+    def on_reset(self, data):
+        self.broadcast('reset', data);
+
 
 if __name__ == '__main__':
     ServerFactory = BroadcastServerFactory

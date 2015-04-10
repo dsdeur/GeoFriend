@@ -51,6 +51,10 @@ gulp.task('html', function() {
         .pipe(gulp.dest(paths.html.dest));
 });
 
+gulp.task('win', function() {
+    return gulp.src('./src/winAnimation/**.*')
+        .pipe(gulp.dest('./build/winAnimation'));
+});
 
 // Process html files
 gulp.task('audio', function() {
@@ -126,6 +130,6 @@ gulp.task('watcher', function() {
 });
 
 // Create tasks
-gulp.task('build', ['css', 'build-js', 'build-js-control', 'images', 'html', 'audio']);
+gulp.task('build', ['css', 'build-js', 'build-js-control', 'images', 'html', 'win', 'audio']);
 gulp.task('default', ['serve', 'watch']);
 gulp.task('watch', ['build', 'watcher']);

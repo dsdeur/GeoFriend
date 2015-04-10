@@ -4,15 +4,17 @@ var config = require('./../config.js');
 var DistanceController = function() {
     var self = this;
 
-    this.init = function(rangeSlider, orientationSlider, connect) {
+    this.init = function(rangeSlider, orientationSlider, connect, reset) {
         this.rangeSlider = rangeSlider;
         this.orientationSlider = orientationSlider;
         this.connect = connect;
+        this.reset = reset;
 
         this.rangeSlider.addEventListener('input', this.handleSliderChange);
         this.orientationSlider.addEventListener('input', this.handleOrientationSliderChange);
 
         this.connect.addEventListener('click', this.handleConnectClick);
+        this.reset.addEventListener('click', this.handleResetClick);
 
         this.socket = new Socket(config.socketUrl);
     };
@@ -38,6 +40,13 @@ var DistanceController = function() {
     this.handleConnectClick = function() {
         console.log("connect");
         self.socket.sendMessage('connect', {});
+    };
+
+    this.handleResetClick = function() {
+        self.rangeSlider.value = 100;
+        self.orientationSlider.value = 0;
+
+        self.socket.sendMessage('reset', {});
     };
 };
 
