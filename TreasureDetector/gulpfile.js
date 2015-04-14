@@ -111,7 +111,8 @@ gulp.task('serve', function() {
         },
         notify: false,
         open: true,
-        port: 8520
+        port: 8520,
+        ghostMode: false
     });
 });
 

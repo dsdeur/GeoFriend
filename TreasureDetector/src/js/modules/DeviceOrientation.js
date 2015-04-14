@@ -7,7 +7,8 @@ var DeviceOrientation = function(callback) {
     };
 
     this.handleOrientationUpdate = function(e) {
-        var orientation = e.alpha || 0; 
+        //console.log(e);
+        var orientation = e.alpha || 0;
 
         self.callback(orientation);
     };

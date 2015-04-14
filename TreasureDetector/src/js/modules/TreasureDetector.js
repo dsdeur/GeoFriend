@@ -1,6 +1,6 @@
 var Socket = require('./Socket.js');
 var DeviceOrientation = require('./DeviceOrientation.js');
-var TimelineMax = require('gsap').TimelineMax;
+var TimelineMax = require('gsap');
 var $ = require('jquery');
 var config = require('./../config.js');
 
@@ -21,22 +21,53 @@ var TreasureDetector = function() {
     this.init = function(compass) {
         this.compass = compass;
 
+        console.log(TimelineMax);
+
+        // Get deviceNr
+        this.deviceNr = getURLParameter('i');
+        console.log(this.deviceNr);
+
         // Connect socket
         this.socket = new Socket(config.socketUrl, {
             'new_distance': self.handleUpdateDistance,
             'new_orientation': self.handleUpdateOrientationOffset,
             'connect': self.handleConnect,
-            'reset': self.handleReset
+            'reset': self.handleReset,
+            'treasure_position': self.handleTreasurePosition
         });
 
         // Register orientation detection
         this.deviceOrientation = new DeviceOrientation(this.updateOrientation);
 
+        // Register button click event
+        $("#placeTreasureBttn").click(function(){
+            self.handleTreasurePlace();
+        });
+
         this.animate();
         this.handleConnect();
     };
 
+    this.handleTreasurePlace = function() {
+        var data = {
+            "deviceNr": self.deviceNr,
+            "orientation": self.orientation
+        };
+
+        this.socket.sendMessage("placed_treasure", data);
+    };
+
+    this.handleTreasurePosition = function(data) {
+        if(data.deviceNr == self.deviceNr) {
+            self.handleUpdateOrientationOffset(data);
+        }
+    };
+
     this.handleUpdateOrientationOffset = function(data) {
+        if(data.deviceNr != self.deviceNr) {
+            return;
+        }
+
         self.orientationOffset = data.orientation * 1;
 
         self.rotate();
@@ -66,7 +97,6 @@ var TreasureDetector = function() {
     };
 
     this.handleConnect = function() {
-        console.log("CONNECT");
         var person = $("#peoples .person").eq(self.connectIndex);
         person.addClass('checked');
 
@@ -87,7 +117,7 @@ var TreasureDetector = function() {
             self.scale = 7;
             this.foundTreasure = false;
 
-            navigator.vibrate([800, 100, 800]);
+            window.navigator.vibrate([800, 100, 800]);
 
             $("#peoples").css({opacity:0});
             $("#gem").css({opacity:0});
@@ -95,6 +125,10 @@ var TreasureDetector = function() {
     };
 
     this.handleUpdateDistance = function(data) {
+        if(data.deviceNr != self.deviceNr) {
+            return;
+        }
+
         self.distance = data.distance;
 
         if(self.distance < 75) {
@@ -118,7 +152,7 @@ var TreasureDetector = function() {
             self.toScale = 0.05;
             self.duration = 0.5;
             self.vibrationDuration = 0;
-            navigator.vibrate([800]);
+            window.navigator.vibrate([800]);
 
             $("#peoples").animate({bottom: "70px"}, 300);
             TweenMax.to("#peoples", 0.3, {scale: 1.4, ease:Linear.easeNone});
@@ -135,13 +169,11 @@ var TreasureDetector = function() {
 
     this.updateOrientation = function(orientation) {
         self.orientation = orientation;
-
         self.rotate();
     };
 
     this.rotate = function() {
         var rotation = self.orientation + self.orientationOffset;
-        console.log(rotation, self.orientation, self.orientationOffset);
         TweenMax.to(self.compass, 0.01, {rotation: rotation});
     };
 
@@ -157,7 +189,7 @@ var TreasureDetector = function() {
         var scaleTo = self.scale + self.toScale;
 
         TweenMax.to(self.compass, self.duration, {scale: scaleTo, ease:Linear.easeNone, onComplete:function() {
-            navigator.vibrate([self.vibrationDuration]);
+            window.navigator.vibrate([self.vibrationDuration]);
         }});
         TweenMax.to(self.compass, self.duration, {scale: self.scale, delay: self.duration, ease:Back.easeOut, onComplete:self.animate});
 
@@ -173,5 +205,9 @@ var TreasureDetector = function() {
     };
 }
 
+
+function getURLParameter(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+}
 
 module.exports = TreasureDetector;

@@ -10,6 +10,8 @@ from autobahn.twisted.websocket import WebSocketServerProtocol, \
 from autobahn.twisted.resource import WebSocketResource
 
 
+directions = {}
+
 class BroadcastServerFactory(WebSocketServerFactory):
     """
     Simple broadcast server broadcasting any message it receives to all
@@ -20,15 +22,19 @@ class BroadcastServerFactory(WebSocketServerFactory):
         WebSocketServerFactory.__init__(self)
         self.clients = []
 
+
     def register(self, client):
         if client not in self.clients:
             print("registered client {}".format(client.peer))
+
             self.clients.append(client)
+
 
     def unregister(self, client):
         if client in self.clients:
             print("unregistered client {}".format(client.peer))
             self.clients.remove(client)
+
 
     def broadcast(self, data):
         for c in self.clients:
@@ -112,6 +118,28 @@ class STRPServerProtocol(WebSocketServerProtocol):
     def on_reset(self, data):
         self.broadcast('reset', data);
 
+
+    def on_placed_treasure(self, data):
+        directions["device{0}".format(data["deviceNr"])] = data["orientation"]
+
+        if len(directions) == 3:
+            for i in range(0,3):
+                x = i + 1
+
+                if x == 3:
+                    x = 0
+
+                data = {
+                    "deviceNr": x,
+                    "orientation": directions["device{0}".format(i)]
+                }
+
+                print(data)
+                self.broadcast('treasure_position', data)
+
+    def on_reset_treasure(self, data):
+        directions = {}
+        print("Reset treasures: {0}".format(directions))
 
 if __name__ == '__main__':
     ServerFactory = BroadcastServerFactory

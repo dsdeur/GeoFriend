@@ -36,13 +36,39 @@
     </head>
     <body>
         <div class="sliders">
-            <h1>Distance</h1>
-            <input type="range" id="distanceSlider" min="0" value="100" max="100" step="1">
-            <h1>Orientation</h1>
-            <input type="range" id="orientationSlider" min="0" value="0" max="360" step="1">
-            <button id="connect">Connect</button>
-            <button id="reset">Reset</button>
+            <h1>Distance 0</h1>
+            <input type="range" class="distanceSlider" id="distanceSlider0" min="0" value="100" max="100" step="1">
+            <h1>Calibration 0</h1>
+            <input type="range" id="orientationSlider0" class="orientationSlider" min="0" value="0" max="360" step="1">
+            <br>
+            <br>
+            <button class="connectBttn" id="connect0">Connect</button>
         </div>
+        <hr>
+        <div class="sliders">
+            <h1>Distance 1</h1>
+            <input type="range" class="distanceSlider" id="distanceSlider1" min="0" value="100" max="100" step="1">
+            <h1>Calibration 1</h1>
+            <input type="range" id="orientationSlider1" class="orientationSlider" min="0" value="0" max="360" step="1">
+            <br>
+            <br>
+            <button class="connectBttn" id="connect1">Connect</button>
+        </div>
+        <hr>
+
+        <div class="sliders">
+            <h1>Distance 2</h1>
+            <input type="range" class="distanceSlider" id="distanceSlider2" min="0" value="100" max="100" step="1">
+            <h1>Calibration 2</h1>
+            <input type="range" id="orientationSlider2" class="orientationSlider" min="0" value="0" max="360" step="1">
+            <br>
+            <br>
+            <button class="connectBttn" id="connect2">Connect</button>
+        </div>
+
+        <hr>
+
+        <button id="resetTreasure">Reset Treasure</button>
         <script src="js/control.js"></script>
     </body>
 </html>
