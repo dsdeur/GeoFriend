@@ -1,9 +1,10 @@
 var Socket = require('./Socket.js');
 var DeviceOrientation = require('./DeviceOrientation.js');
-var TimelineMax = require('gsap').TimelineMax;
+var GSAP = require('gsap');
 var $ = require('jquery');
 var config = require('./../config.js');
-
+TweenMax.set("#left", {transformOrigin: "150% 50%"})
+TweenMax.set("#right", {transformOrigin: "-50% 50%"})
 
 var TreasureDetector = function() {
     var self = this;
@@ -33,6 +34,7 @@ var TreasureDetector = function() {
         this.deviceOrientation = new DeviceOrientation(this.updateOrientation);
 
         this.animate();
+        this.startAnimate();
         this.handleConnect();
     };
 
@@ -170,6 +172,14 @@ var TreasureDetector = function() {
             TweenMax.to(person, 0.3, {scale: 1.2, ease:Linear.easeNone});
             TweenMax.to(person, 0.5, {scale: 1, delay: 0.3, ease:Back.easeOut});
         }
+    };
+    this.startAnimate = function() {
+        var animeerAlles = new TimelineMax({repeat: -1, yoyo:true})
+          .to("#diamond", 1.5, {top:"+=25", ease:Linear.easeNone})
+          .to("#left", 1.5, {rotation: "-=15",top:"+=35", ease:Back.easeOut},0)
+          .to("#right", 1.5, {rotation: "+=15",top:"+=35", ease:Back.easeOut},0)
+          .from("#placeButton", 1.5, {autoAlpha: 0.3, ease:Linear.easeNone},0)
+
     };
 }
 
