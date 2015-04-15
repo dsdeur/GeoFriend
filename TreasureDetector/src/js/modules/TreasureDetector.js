@@ -22,8 +22,6 @@ var TreasureDetector = function() {
     this.init = function(compass) {
         this.compass = compass;
 
-        console.log(TimelineMax);
-
         // Get deviceNr
         this.deviceNr = getURLParameter('i');
         console.log(this.deviceNr);
@@ -41,7 +39,8 @@ var TreasureDetector = function() {
         this.deviceOrientation = new DeviceOrientation(this.updateOrientation);
 
         // Register button click event
-        $("#placeTreasureBttn").click(function(){
+        $(".buttonWrapper").click(function(){
+            $(".buttonWrapper").addClass("click");
             self.handleTreasurePlace();
         });
 
@@ -57,6 +56,13 @@ var TreasureDetector = function() {
         };
 
         this.socket.sendMessage("placed_treasure", data);
+
+        TweenMax.to("#placeTreasure", 0.7, {
+            scale: 0,
+            autoAlpha: 0,
+            ease: Back.easeIn,
+            delay: .3
+        });
     };
 
     this.handleTreasurePosition = function(data) {
@@ -71,7 +77,6 @@ var TreasureDetector = function() {
         }
 
         self.orientationOffset = data.orientation * 1;
-
         self.rotate();
     };
 
@@ -176,7 +181,7 @@ var TreasureDetector = function() {
 
     this.rotate = function() {
         var rotation = self.orientation + self.orientationOffset;
-        TweenMax.to(self.compass, 0.01, {rotation: rotation});
+        TweenMax.to("#compassContainer", 0.01, {rotation: rotation});
     };
 
     this.makeCircle = function(){
@@ -190,10 +195,10 @@ var TreasureDetector = function() {
     this.animate = function() {
         var scaleTo = self.scale + self.toScale;
 
-        TweenMax.to(self.compass, self.duration, {scale: scaleTo, ease:Linear.easeNone, onComplete:function() {
+        TweenMax.to("#compassContainer", self.duration, {scale: scaleTo, ease:Linear.easeNone, onComplete:function() {
             window.navigator.vibrate([self.vibrationDuration]);
         }});
-        TweenMax.to(self.compass, self.duration, {scale: self.scale, delay: self.duration, ease:Back.easeOut, onComplete:self.animate});
+        TweenMax.to("#compassContainer", self.duration, {scale: self.scale, delay: self.duration, ease:Back.easeOut, onComplete:self.animate});
 
 
         if(self.foundTreasure) {

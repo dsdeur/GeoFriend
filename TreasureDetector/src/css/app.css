@@ -117,6 +117,9 @@ button {width: auto; overflow: visible;}
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 
+hr {
+	border-top: 1px solid #454545;
+}
 
 /*End of Reset-------------------------------------------------------------------*/
 html {
@@ -164,16 +167,22 @@ iframe {
 	z-index: 9999999;
 }
 
-#compass {
+#compassContainer {
 	height: 200px;
 	width: 200px;
-	background: url("../img/arrow.svg") no-repeat;
-
 	position: fixed;
 	top:50%;
-	margin-top:-100px;
 	left:50%;
+	margin-top:-100px;
 	margin-left:-100px;
+}
+
+#compass {
+	position: relative;
+	border: 1px solid transparent;
+	height: 100%;
+	width: 100%;
+	background: url("../img/arrow.svg") no-repeat;
 
 	border-radius: 50%;
 	background-size: 70%;
