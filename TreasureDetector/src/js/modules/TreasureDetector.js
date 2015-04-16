@@ -115,7 +115,7 @@ var TreasureDetector = function() {
 
         self.connectIndex++;
 
-        if(self.connectIndex > 4) {
+        if(self.connectIndex > 2) {
             var iframe = document.getElementById("iframe");
             iframe.src = "winAnimation/index.html";
 

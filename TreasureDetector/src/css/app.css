@@ -212,7 +212,7 @@ iframe {
 	bottom:70px;
 	bottom:-50px;
 	left:50%;
-	margin-left:-126px;
+	margin-left:-75px;
 }
 
 #peoples .person {
@@ -317,10 +317,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 		padding: 9px 15px 7px 15px;
 		border-radius: 5px;
 		background-color: #3c3c3c;
-		-webkit-box-shadow: 0px 8px 0px 0px rgba(45, 45, 45, 1);
+		box-shadow: 0px 8px 0px 0px rgba(45, 45, 45, 1);
 		transition: all 0.3s ease;
 	}
 	.click {
 		top:488px;
-		-webkit-box-shadow: 0px 0px 0px 0px rgba(45, 45, 45, 1);
+		box-shadow: 0px 0px 0px 0px rgba(45, 45, 45, 1);
 	}
