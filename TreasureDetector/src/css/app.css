@@ -267,11 +267,16 @@ input[type=range]::-webkit-slider-thumb {
   height: 50px;
   width: 50px;
   border-radius: 50px;
-  background: #e84b3c;
+  background: #888;
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -19.35px;
 }
+
+input[type=range].enabled::-webkit-slider-thumb {
+	background: #e84b3c;
+}
+
 input[type=range]:focus::-webkit-slider-runnable-track {
 	background: rgba(54,65,77, 1);
 }

@@ -122,6 +122,8 @@ class STRPServerProtocol(WebSocketServerProtocol):
     def on_placed_treasure(self, data):
         directions["device{0}".format(data["deviceNr"])] = data["orientation"]
 
+        self.broadcast('controller_treasure_placed', data);
+
         print("placed_treasure: {0}".format(directions))
 
         if len(directions) == 3:

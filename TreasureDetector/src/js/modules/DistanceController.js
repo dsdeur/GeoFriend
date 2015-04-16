@@ -30,7 +30,16 @@ var DistanceController = function() {
             });
         });
 
-        this.socket = new Socket(config.socketUrl);
+        this.socket = new Socket(config.socketUrl, {
+            "controller_treasure_placed": self.handleTreasurePlaced
+        });
+    };
+
+    this.handleTreasurePlaced = function(data) {
+        var deviceNr = data["deviceNr"];
+
+        self.rangeSliders[deviceNr].classList.add("enabled");
+        self.calibrationSliders[deviceNr].classList.add("enabled");
     };
 
     this.handleOrientationSliderChange = function(e, i) {
